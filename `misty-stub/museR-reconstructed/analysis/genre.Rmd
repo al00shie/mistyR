@@ -1,0 +1,26 @@
+---
+title: "Genre"
+author: "241 Final"
+#date: "5/9/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../R/header.R")
+source("genre.R")
+.src(d = 1)
+```
+
+```{r}
+# Find the list of bach pieces
+waltz_files <- find_genre_scores("waltz")
+waltz_files
+```
+
+```{r}
+# Get the kern dataframe for a piece
+waltz <- genre_score("waltz", waltz_scores[1])
+# Once the above code works, get all the waltzes
+waltz_scores <- byGenre(genre = "waltz")
+```

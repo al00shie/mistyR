@@ -1,0 +1,75 @@
+---
+title: "Development Template"
+author: "Taqi"
+# date: "4/6/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# Load libraries
+library(tidyverse)
+# Source files
+source("../R/header.R")
+.src(d = 1)
+```
+
+```{r}
+# Bach score file path
+bach_spline <- "../data-krn/bach_C_notes.krn"
+# Two versions of the score
+bach <- kern2df(bach_spline)
+bach_keys <- piece_df(c("../data-krn/bach_C_notes.krn"), c("keys"))
+```
+
+```{r}
+# Older versions of the dataframes
+#source("krn-old.R")
+#bach_old <- kern2df_old(bach_spline)
+#bach_keys_old <- piece_df_old(bach_spline, "keys")
+```
+
+```{r}
+# Big Test for Harmony + Rhythm Funcs
+# [stuff that is commented out doesn't work!]
+#=========================================================#
+#                         Harmony
+#=========================================================#
+ecnb_test <- extract_chord_name_beat(bach_keys)
+ecvb_test <- extract_chord_value_beat(bach_keys)
+#=========================================================#
+ch_test <- chord_harms(bach_keys)
+chord <- ch_test[[545]]
+och_test <- one_chord_harms(chord)
+hi_test <- harm_ints(bach_keys)  # returns DF (12 obs)
+fcs_test <- freq_chord_size(bach_keys, 4) # returns float
+#=========================================================#
+#tmi_test <- tot_mel_int(bach_spline) # (deprecated)
+#imi_test <- is_mel_int() # ignore this one for now (deprecated)
+#=========================================================#
+#tl2_test <- top_line2(bach_keys, "Piano") # [fix?] returns 'logical (empty)'
+#mi_test <- mel_ints(bach_keys, "Piano") # [fix?] returns list full of NaN
+#c_test <- consonances(bach_keys, "Piano") # [fix?] returns list full of NaN
+#=========================================================#
+sdf_test <- scale_degree_freq(bach_keys) # outputs freq table of scale degrees
+#as_test <- assign_sd(bach_keys) # (deprecated)
+```
+
+```{r}
+#=========================================================#
+#                       Rhythm
+#=========================================================#
+rf_test <- rhythm_freq(bach_keys)
+trf_test <- top_rhythm_freq(bach_keys) # Returns a rhythm frequency vector
+df_test <- dot_freq(bach_keys)
+tdf_test <- top_dot_freq(bach_keys)
+#=========================================================#
+bd_test <- beat_density(bach_keys)
+#nd_test <- note_duration(bach_keys)  # (deprecated)
+re_test <- rhy_entropy(bach_keys) # returns numeric
+#dd_test <- duration_df(bach_keys) # (deprecated)
+#lm_test <- length_measures(bach_keys) # returns num of measures in the piece (works, but forcing deprecation)
+#m_test <- meter(bach_keys) # (deprecated)
+```
+
+

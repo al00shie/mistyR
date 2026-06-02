@@ -1,0 +1,8 @@
+# Function name changes
+n.v_n.n => krn_note
+
+# Helper function additions
++fx: .note_hashtable # Creates a note hash table for the global environment (to avoid computational waste)
+
+# Global variable additions
++v: note_table <- .note_hashtable()

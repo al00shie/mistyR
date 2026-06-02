@@ -1,0 +1,84 @@
+---
+title: "Development Template"
+author: "Taqi"
+# date: "4/6/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# Load libraries
+library(tidyverse)
+# Source files
+source("../../R/header.R")
+.src(2)
+```
+
+```{r}
+# Bach score file path
+bach_spline <- "../../scores/bach_C_notes.krn"
+bach <- piece_df(v = bach_spline, instruments = c("Piano"))
+```
+
+# Old implementations
+
+```{r}
+.k2df_tidy_measures_OLD <- function(){
+  measures <- grep("=",data, value = F) # Get rows with measure boundaries - lines that start with an =
+  val_list_notes <- data[-measures] # Notes without the measures
+  if(!grepl("=1-",data[1])){measures <- c(0,measures)} # Pickup measure?
+  measure_numbers <- 0:(length(measures)) # how many measures there are
+  measure_column <- vector() # make a vector of which row each is in.
+  for(i in 2:length(measures)){
+    len <- as.numeric(measures[i]-measures[(i-1)])-1
+    val <- measure_numbers[i]
+    measure_column <- c(measure_column, rep(val, len))
+  }
+}
+```
+
+```{r}
+##########################################################################################
+n <- data.frame()
+for( j in 1:max_notes){
+  for( i in 1:length(val_list_notes)){
+    n[i,j]<-sep_chord[[i]][j]
+  }
+}
+##########################################################################################
+piece <- cbind(measure_column, n)
+piece <- as.data.frame(lapply(piece, function(y) gsub("L|J|K", "", y)))
+piece <- as.data.frame(lapply(piece, function(y) gsub("'", "", y)))
+piece <- as.data.frame(lapply(piece, function(y) gsub("\\[|\\]|\\\\|\\/", "", y)))
+spline_df <- data.frame(rep(key_v,nrow(piece)),
+                        rep(meter,nrow(piece)),
+                        measure_column)
+```
+
+```{r}
+for(i in 2:(max_notes+1)){
+    # Rhythm value
+    ri <- stringr::str_extract(piece[,i],"[0-9]{1,2}(\\.*)")
+    # Note value
+    notei <- stringr::str_extract(piece[,i],"[A-z]{1,2}.*")
+    ##########################################################################################
+    notei_nv <- add_n.v_n.n(notei)
+    
+    curr_note_nv <- krn_note
+    
+    add_n.v_n.n <- function(notes){
+      note_df <- data.frame(colnames(c("n.n","n.v")))
+      for(i in 1:length(notes)){
+        note_df[i,1] <- krn_note(notes[i])[1]
+        note_df[i,2] <- krn_note(notes[i])[2] 
+      }
+      return(note_df)
+    }  
+    ##########################################################################################
+    spline_df <- cbind(spline_df,ri,notei,notei_nv)
+  }
+  spline_df <- as.data.frame(lapply(spline_df,
+                                    function(y) gsub("K", "", y)))
+  spline_df
+```
+

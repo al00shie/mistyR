@@ -1,0 +1,46 @@
+---
+title: "Development Template"
+author: "Taqi"
+# date: "4/6/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# Load libraries
+library(tidyverse)
+# Source files
+source("../R/header.R")
+.src(1)
+```
+
+
+
+# Functions by Script File
+
+## krn_import.R
+
+```{r}
+# Bach score file path
+bach_spline <- "../scores/bach_C_notes.krn"
+chopin_spline <- "../scores/chopin.krn"
+```
+
+```{r}
+bach_k <- kern2df(spline = chopin_spline)
+bach <- piece_df(v = bach_spline, instruments = c("Piano"))
+```
+
+## krn_helper.R
+
+```{r}
+raw_notes <- bach_k$notei
+raw_notes
+some <- map(raw_notes, n.v_n.n)
+#some[1:5]
+```
+
+```{r}
+Major_minor(bach)
+```
+

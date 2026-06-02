@@ -1,0 +1,26 @@
+---
+title: "Development Template"
+author: "Taqi"
+# date: "4/6/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# Load libraries
+library(tidyverse)
+# Source files
+source("../R/header.R")
+.src(1)
+```
+
+```{r}
+# Bach score file path
+bach_spline <- "../scores/bach_C_notes.krn"
+bach <- piece_df(v = bach_spline, instruments = c("Piano"))
+```
+
+```{r}
+
+```
+
