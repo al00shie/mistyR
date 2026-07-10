@@ -111,8 +111,9 @@ Shared language proving the lineage:
 
 Code side (this repo):
 
-- `blues_scale()` (`scale.R`) references `OTHER_SCALES`, which is commented out in
-  `data.R` — the function errors if called.
+- ~~`blues_scale()` (`scale.R`) references `OTHER_SCALES`, which is commented out in
+  `data.R` — the function errors if called.~~ **Fixed 2026-07-10** (`7ce17f0`), along
+  with the missing `b6` scale degree and the Phrygian mode construction.
 - ~~`header.R` `preset2` lists `misty.R` and `enharmonic.R`, which no longer exist in `R/`
   (enharmonic logic lives in `accidental.R`).~~ **Fixed 2026-07-10** — preset now lists
   the real core files.

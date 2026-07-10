@@ -14,24 +14,24 @@ Each pass is its own commit for selective revert.
 
 ### First pass (this series)
 
-- [ ] **A1. Rename incidental → accidental** across live code (`R/`). Functions
+- [x] **A1. Rename incidental → accidental** (done 2026-07-10, mistyR `69d1379`) across live code (`R/`). Functions
   (`.addIncidental`, `.detectIncidental`, `.dropIncidental`, `.incidentalSemitones`,
   `.incToSymbol`), infix `%INC%` → `%ACC%`, globals (`INC_HASH`, `.INC_HASH_EXT`),
   locals/comments, and `git mv R/incidental.R R/accidental.R`. Leave `misty-stub/`,
   `archive/`, `dev/archive/` frozen (history). Update concordance fossil #1 to
   past tense.
-- [ ] **A2. Fix `SCALE_DEGREES` missing `b6`** (`data.R`): the list jumps `6` → `b7`,
+- [x] **A2. Fix `SCALE_DEGREES` missing `b6`** (done 2026-07-10, mistyR `7ce17f0`) (`data.R`): the list jumps `6` → `b7`,
   so any scale containing degree `b6` (natural minor!) silently mis-spells it —
   `NULL` propagates through `.intervalNote()` to a zero-length accidental and the
   white letter is returned unchanged. Symptom: `minor_scale("D")` yields `B`
   instead of `B-`. Fix: add `b6 = 8`.
-- [ ] **A3. Fix Phrygian construction** (`data.R`): built from *dorian* with only
+- [x] **A3. Fix Phrygian construction** (done 2026-07-10, mistyR `7ce17f0`) (`data.R`): built from *dorian* with only
   degree 1 flattened, leaving a natural 6 — Phrygian is `1 b2 b3 4 5 b6 b7`.
   Build from `minor` instead.
-- [ ] **A4. Restore `OTHER_SCALES`** (`data.R`): commented out, but `blues_scale()`
+- [x] **A4. Restore `OTHER_SCALES`** (done 2026-07-10, mistyR `7ce17f0`) (`data.R`): commented out, but `blues_scale()`
   (`scale.R`) still references it and errors if called. Uncomment (degrees all
   exist in `SCALE_DEGREES` once A2 lands).
-- [ ] **A5. Fix stale `.srcp` preset2** (`header.R`): lists `misty.R` and
+- [x] **A5. Fix stale `.srcp` preset2** (done 2026-07-10, mistyR `69d1379`) (`header.R`): lists `misty.R` and
   `enharmonic.R`, which no longer exist; also references `incidental.R` (renamed
   by A1). Point at the real core files.
 
@@ -55,21 +55,27 @@ Each pass is its own commit for selective revert.
 - [ ] **A11. Double-accidental regex fragility**: `.INC_HASH_EXT` comment notes `##`
   / `bb` were dropped from symbols because of regex confounding (hence `&`/`x`).
   Consider exact-count matching so `bb`/`##` input spellings parse.
+- [ ] **A12. Inconsistent flat symbol on output** (found during A1 smoke tests):
+  `enharmonic("F#")` returns `"Gb"` (letter b, via `.addAccidental`'s `"b"` branch)
+  while `.intervalNote()`/`scale()` emit `"G-"` (kern `-`, via
+  `.accidentalSemitones`' symbol vector) — and `POSSIBLE_NOTES` only recognizes
+  `-`. Both parse back fine, but pick one output convention (kern `-` suggested)
+  so round-trips through `collapseNotes()` don't drop enharmonic() output.
 
 ## B. MOTP — book side (`music-of-the-primes` repo)
 
 ### First pass (this series)
 
-- [ ] **B1. "Phyrgian" → "Phrygian"** (`preamble/commands.tex`, `\Phg` macro) —
+- [x] **B1. "Phyrgian" → "Phrygian"** (done 2026-07-10, book `400c574`) (`preamble/commands.tex`, `\Phg` macro) —
   renders misspelled in Ch. 3 via `\Phg` at the mode-rotation display.
-- [ ] **B2. `\AEOLIAN` = "whwwwhww"** (`preamble/modes.tex`) — wrong pattern
+- [x] **B2. `\AEOLIAN` = "whwwwhww"** (done 2026-07-10, book `400c574`) (`preamble/scales.tex`, not modes.tex as first logged) — wrong pattern
   (8 intervals, sums to 14 semitones). Aeolian is `whwwhww`. Currently only
   referenced in a comment, but it's a landmine.
-- [ ] **B3. "the tile of fifths" → "the tiling of fifths"** (`chapters/chapter2.tex`,
+- [x] **B3. "the tile of fifths" → "the tiling of fifths"** (done 2026-07-10, book `400c574`) (`chapters/chapter2.tex`,
   Circle of Fifths subsection).
-- [ ] **B4. "the field ℤ₇" → "the group ℤ₇"** (`chapters/chapter2.tex`, §2.1 note) —
+- [x] **B4. "the field ℤ₇" → "the group ℤ₇"** (done 2026-07-10, book `400c574`) (`chapters/chapter2.tex`, §2.1 note) —
   only the additive group structure is ever used.
-- [ ] **B5. `F^{{\bf{x}}}` → `F\dsh`** (`chapters/chapter2.tex`, cursed-shell-spellings
+- [x] **B5. `F^{{\bf{x}}}` → `F\dsh`** (done 2026-07-10, book `400c574`) (`chapters/chapter2.tex`, cursed-shell-spellings
   display) — use the existing `\dsharp` macro instead of the fossilized ASCII bold x
   (see concordance, Vocabulary Fossils #3).
 
@@ -116,7 +122,11 @@ Each pass is its own commit for selective revert.
   treatment (Ch. 1 ↔ tuning tables; Ch. 3 ↔ `DIATONIC_SCALES`, mode tables,
   `analysis.R` stylometry).
 - [ ] **C2. `misty-stub` lineage note**: one page on mistyPy / museR (vendored
-  upstream) / museR-reconstructed and what each contributed.
+  upstream) / museR-reconstructed and what each contributed. NEW (2026-07-10):
+  the book repo's in-flight cleanup is deleting `music-prog/MST-R/` — a *third*
+  copy of the mistyR core (pre-rename, with `tentative/scale.R`) plus
+  `music-python/`. Confirm nothing unique is lost before that deletion is
+  committed, then fold into the lineage note.
 - [ ] **C3. Keep concordance truthful after renames** (A1 makes fossil #1
   historical; book fixes B1–B5 retire matching "Known Issues" entries).
 
