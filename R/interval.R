@@ -10,10 +10,10 @@
   white <- tonic %STEP+% (degree_n - 1)
   # Find the semitones spanned
   semitones_white <- .WKsemitones(tonic, degree_n)
-  # Use incidentals to find the difference
-  incidental <- .incidentalSemitones(semitones - semitones_white)
-  # Paste incidental the correct target note
-  note <- paste(white, incidental, sep = "")
+  # Use accidentals to find the difference
+  accidental <- .accidentalSemitones(semitones - semitones_white)
+  # Paste accidental the correct target note
+  note <- paste(white, accidental, sep = "")
   # Return the interval
   note
 }
@@ -40,13 +40,13 @@
 #            SEMITONE ARITHMETIC
 #============================================#
 `%ST+%` <- function(note, semitones){
-  if(semitones == 1){ return(note %INC% "#") }
-  else if(semitones == 2){ return((note %INC% "#") %INC% "#")}
+  if(semitones == 1){ return(note %ACC% "#") }
+  else if(semitones == 2){ return((note %ACC% "#") %ACC% "#")}
 }
 #============================================#
 `%ST-%` <- function(note, semitones){
-  if(semitones == 1){ return(note %INC% "b") }
-  else if(semitones == 2){ return((note %INC% "b") %INC% "b")}
+  if(semitones == 1){ return(note %ACC% "b") }
+  else if(semitones == 2){ return((note %ACC% "b") %ACC% "b")}
 }
 
 

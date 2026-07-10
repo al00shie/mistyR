@@ -11,15 +11,15 @@ RHYTHMS <- c("2","2.","4","4.","8","8.","16","16.","32")
 .KRN_NOTE_HASH <- function(){
   # Vectors of .krn syntax
   musical_alphabet_krn <- c("[Aa]","[Bb]","[Cc]","[Dd]","[Ee]","[Ff]","[Gg]") # The musical alphabet
-  incidentals_krn <- c("-","(?!#|-)[kTp;n\\)_]*$","#") # Corrospond to flat, natural, and sharp respectively
+  accidentals_krn <- c("-","(?!#|-)[kTp;n\\)_]*$","#") # Corrospond to flat, natural, and sharp respectively
   # Vectors for museR syntax
   musical_alphabet <- c("A","B","C","D","E","F","G") # The musical alphabet
-  incidentals <- c("-","","#") # Corrospond to flat, natural, and sharp respectively
-  # Helper: returns a character vector of size 3 applying each incidental
-  .apply_incidentals <- function(note_letter, incidentals_){paste(note_letter, incidentals_, sep = "")}
+  accidentals <- c("-","","#") # Corrospond to flat, natural, and sharp respectively
+  # Helper: returns a character vector of size 3 applying each accidental
+  .apply_accidentals <- function(note_letter, accidentals_){paste(note_letter, accidentals_, sep = "")}
   # Get notes and their values
-  note_patterns <- do.call("c", lapply(musical_alphabet_krn, .apply_incidentals, incidentals_krn))
-  note_labels <- do.call("c", lapply(musical_alphabet, .apply_incidentals, incidentals))
+  note_patterns <- do.call("c", lapply(musical_alphabet_krn, .apply_accidentals, accidentals_krn))
+  note_labels <- do.call("c", lapply(musical_alphabet, .apply_accidentals, accidentals))
   note_values <- c(1,2,3,3,4,5,4,5,6,6,7,8,8,9,10,9,10,11,11,12,1)
   # Hash table of notes
   KRN_NOTE_HASH <- data.frame(pattern = note_patterns, label = note_labels, value = note_values)
@@ -123,27 +123,27 @@ ALPH_HASH <- function(){
   return(ALPHABET)
 }
 #============================================#
-# Return an extended hash table of the incidentals
-.INC_HASH_EXT <- function(){
-  # Create ordered vectors for all the incidentals covered
-  INCS <- c("flat","sharp","2flat","2sharp")
-  # Create ordered vectors for the incidental symbols and their name
+# Return an extended hash table of the accidentals
+.ACC_HASH_EXT <- function(){
+  # Create ordered vectors for all the accidentals covered
+  ACCS <- c("flat","sharp","2flat","2sharp")
+  # Create ordered vectors for the accidental symbols and their name
   SYMBOLS <- c("-","b","#","&","x","X") # Note: removed ## and bb due to regex confounding. Fix: match exact number.
-  # Create a vector of counts for each incidental for robust maintainence
+  # Create a vector of counts for each accidental for robust maintainence
   COUNTS <- c(2,1,1,2)
-  # Using the counts, create the correct ordered incidentals vector
-  INCIDENTALS <- do.call("c",lapply(seq_along(COUNTS), function(i){rep(INCS[i], COUNTS[i])}))
+  # Using the counts, create the correct ordered accidentals vector
+  ACCIDENTALS <- do.call("c",lapply(seq_along(COUNTS), function(i){rep(ACCS[i], COUNTS[i])}))
   # Return the hash table
-  data.frame(symbol = SYMBOLS, incidental = INCIDENTALS)
+  data.frame(symbol = SYMBOLS, accidental = ACCIDENTALS)
 }
 #============================================#
 #              POSSIBLE NOTES
 #============================================#
 .POSSIBLE_NOTES <- function(){
-  KRN_INC <- c("","-","#","--","##")
+  KRN_ACC <- c("","-","#","--","##")
   possible <- c()
   for(letter in MUS_ALPH){
-    possible <- c(possible, paste(letter,KRN_INC, sep = ""))
+    possible <- c(possible, paste(letter,KRN_ACC, sep = ""))
   }
   possible
 }
@@ -160,11 +160,11 @@ KRN_NOTES <- .KRN_NOTE_HASH()
 MUS_ALPH <- LETTERS[1:7]
 # Alphabet hash table
 ALPHABET <- ALPH_HASH()
-# Get notes with corrosponding incidentals
+# Get notes with corrosponding accidentals
 HAS_FLATS <- ALPHABET[which(ALPHABET$HAS_FL),"LETTER"]
 HAS_SHARPS <- ALPHABET[which(ALPHABET$HAS_SH),"LETTER"]
-# Get an (extended) hash table of incidentals
-INC_HASH <- .INC_HASH_EXT()
+# Get an (extended) hash table of accidentals
+ACC_HASH <- .ACC_HASH_EXT()
 # Chromatic scale
 #CHROMATIC_C_SHPS <- c("C","C#","D","D#","E","F","F#","G","G#","A","A#","B")
 #CHROMATIC_C_FLTS <- c("C","Db","D","Eb","E","F","Gb","G","Ab","A","Bb","B")

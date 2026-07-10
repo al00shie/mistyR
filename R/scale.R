@@ -31,18 +31,18 @@ blues_scale <- function(tonic, quality){
 #============================================#
 # Given a tonic and a vector of scale degrees, spells the scale and returns it
 scale <- function(tonic, scale_degrees){
-  # Get the note letter and incidental
-  note_letter <- .dropIncidental(tonic)
-  incidental <- .detectIncidental(tonic)
+  # Get the note letter and accidental
+  note_letter <- .dropAccidental(tonic)
+  accidental <- .detectAccidental(tonic)
   # Get the white key scale (i.e. using just the note letter)
   base_scale <- .scaleBase(note_letter, scale_degrees)
-  # If the incidental is a natural (white key), return the white key scale
-  if(incidental == "natural"){ return(base_scale) }
-  # Otherwise, apply the incidental over the base scale to return the correct scale
-  purrr::map_chr(base_scale, .addIncidental, incidental)
+  # If the accidental is a natural (white key), return the white key scale
+  if(accidental == "natural"){ return(base_scale) }
+  # Otherwise, apply the accidental over the base scale to return the correct scale
+  purrr::map_chr(base_scale, .addAccidental, accidental)
 }
 #============================================#
-# Given a white key, return the scale base prior to incidentalization
+# Given a white key, return the scale base prior to accidentalization
 .scaleBase <- function(tonic, scale_degrees){
   c(tonic, purrr::map2_chr(rep(tonic,length(scale_degrees)), scale_degrees, .intervalNote))
 }
@@ -60,7 +60,7 @@ scale <- function(tonic, scale_degrees){
 #   # Create a stripped version of the scale
 #   stripped <- c()
 #   for(i in 1:num_notes){
-#     stripped[i] <- .dropIncidental(scale[i])
+#     stripped[i] <- .dropAccidental(scale[i])
 #   }
 # }
 #============================================#

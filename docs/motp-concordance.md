@@ -26,18 +26,18 @@ How to read the book if you know the code (and vice versa).
 | Λₖ(L) = L ⊕ (k−1) | k-degree letter operator | `%STEP+%`, `%STEPUP%` (`scale.R`); `tonic %STEP+% (degree_n − 1)` in `.intervalNote()` |
 | 𝕃ₖ[L] | k-degree letter sequence | `.ALPH_RANGE(note_index(L), k)` |
 | S₇[L] | Heptatonic scale template | `.baseScale()` (`harmony.R`) |
-| π = (L, α) = L^α | Note-letter (pitch label) | Note string, e.g. `"F#"` — letter via `.dropIncidental()`, accidental via `.detectIncidental()` |
-| α ∈ 𝔸 = {♭, ♮, ♯} | Accidental | "**incidental**" throughout the code; `INC_HASH` (`data.R`) |
-| π ⊙ α | Apply accidental to pitch | `%INC%` / `.addIncidental()` (`incidental.R`) |
-| (L♯)♭ = L (neutralization) | Accidental neutralization | sharp+flat → `""` branch of `.addIncidental()` |
-| \|α\| ∈ {−1, 0, +1} (Distance Rule: Semitonal-Accidental Norm) | Accidental semitone value | `.incidentalSemitones()` — code extends to doubles: `(&, -, "", #, x) ↔ (−2, −1, 0, +1, +2)` |
+| π = (L, α) = L^α | Note-letter (pitch label) | Note string, e.g. `"F#"` — letter via `.dropAccidental()`, accidental via `.detectAccidental()` |
+| α ∈ 𝔸 = {♭, ♮, ♯} | Accidental | `ACC_HASH` (`data.R`) — called "incidental" before the 2026-07-10 rename; see Vocabulary Fossils #1 |
+| π ⊙ α | Apply accidental to pitch | `%ACC%` / `.addAccidental()` (`accidental.R`) |
+| (L♯)♭ = L (neutralization) | Accidental neutralization | sharp+flat → `""` branch of `.addAccidental()` |
+| \|α\| ∈ {−1, 0, +1} (Distance Rule: Semitonal-Accidental Norm) | Accidental semitone value | `.accidentalSemitones()` — code extends to doubles: `(&, -, "", #, x) ↔ (−2, −1, 0, +1, +2)` |
 | Blk[♭] = {A,B,D,E,G} | Black flat-supported letters | `ALPH_HASH()$HAS_FL`; global `HAS_FLATS` (`data.R`) |
 | Blk[♯] = {A,C,D,F,G} | Black sharp-supported letters | `ALPH_HASH()$HAS_SH`; global `HAS_SHARPS` (`data.R`) |
-| Color(L^α) = Blk/Wht | Key color predicate | `.isBlackNote()` / `.isWhiteNote()` (`incidental.R`) |
+| Color(L^α) = Blk/Wht | Key color predicate | `.isBlackNote()` / `.isWhiteNote()` (`accidental.R`) |
 | Proper / improper enharmonics (Def. Chromatic Enharmonic) | Enharmonic pairs | `.cycle_enharmonic()` (proper), `.simpler_enharmonic()` (improper / white-key); the word *improper* is shared vocabulary |
 | dₙ(L) = Σ d₂(Λⱼ) (Distance Rules: Step / n-Degree) | White-key semitone distance | `.WKsemitones()` (`interval.R`): `semitones <- FLATS + WHITES` — one semitone per step plus one extra per flat-supported letter in range |
-| "Chromatic Algorithm" (borrowing) | Spell any interval: white-key skeleton + accidental correction | `.intervalNote()` (`interval.R`): `SCALE_DEGREES[[degree]] − .WKsemitones(...)` → `.incidentalSemitones()` |
-| **Thm. Accidental-Transpositional Preservation Principle** | Same accidental on both notes preserves distance | `scale()` (`scale.R`): build white-key base scale, then `map_chr(base_scale, .addIncidental, incidental)` — the theorem is this function's correctness argument |
+| "Chromatic Algorithm" (borrowing) | Spell any interval: white-key skeleton + accidental correction | `.intervalNote()` (`interval.R`): `SCALE_DEGREES[[degree]] − .WKsemitones(...)` → `.accidentalSemitones()` |
+| **Thm. Accidental-Transpositional Preservation Principle** | Same accidental on both notes preserves distance | `scale()` (`scale.R`): build white-key base scale, then `map_chr(base_scale, .addAccidental, incidental)` — the theorem is this function's correctness argument |
 | White-key sufficiency reduction (§ Chromatic Pitch Neighbours) | Reduce accidentalized problems to white keys | `scaleDegree()` (`harmony.R`): sharpens flat tonics / flattens sharp tonics, then delegates to `.scaleDegreeWK()` |
 | Furry-cat chain F–C–G–D–A–E–B; tiled circle Φ | Chain of fifths; key signatures | `.KEYS_TABLE()` (`data.R`): sharps accrue as `f# c# g# d# a# e# b#` (the chain, sharped); flats as `b- e- a- d- g- c- f-` (BEADGCF = circle of fourths ℛ) |
 | qₖ interval table; ℤ₁₂ | Semitone space, enharmonic collapse | `SCALE_DEGREES` list; `KRN_NOTE_HASH()` note values (enharmonics share values) (`data.R`) |
@@ -49,14 +49,16 @@ How to read the book if you know the code (and vice versa).
 
 Shared language proving the lineage:
 
-1. **"Incidental."** The code's universal term (`INC_HASH`, `incidental.R`, `%INC%`).
-   The book adopted the standard *accidental*, but Defs. *Quality Dyad* and *Quality Triad*
-   still read "an assignment of an **incidental** pair/triple (α, α_T)" — mistyR vocabulary
-   surviving inside the formalization.
+1. **"Incidental."** The code's original universal term (`INC_HASH`, `incidental.R`,
+   `%INC%`) — renamed to *accidental* across live code on 2026-07-10; the tag
+   `pre-accidental-refactor` and the frozen `misty-stub/` / `dev/archive/` trees preserve
+   the old vocabulary. The book adopted the standard *accidental* first, but Defs.
+   *Quality Dyad* and *Quality Triad* still read "an assignment of an **incidental**
+   pair/triple (α, α_T)" — mistyR vocabulary surviving inside the formalization.
 2. **"Improper."** `.improperStepDegree()` (code) ↔ "improper enharmonics"
    (book, Def. Chromatic Enharmonic).
 3. **The bold x.** The code encodes double-sharp as ASCII `"x"` (chosen because `##`
-   confounded regex — see the comment in `.INC_HASH_EXT()`). The book writes
+   confounded regex — see the comment in `.ACC_HASH_EXT()`). The book writes
    φ(B♯) = F^**x** with literal `{\bf{x}}` even though `preamble/commands.tex` defines a
    proper `\dsh` macro. The R workaround fossilized into the book's typography.
 
@@ -82,7 +84,7 @@ Shared language proving the lineage:
 
 ### Code-only (implementation beyond the book)
 
-- **Double accidentals as first-class** (±2 in `.incidentalSemitones()`; symbols `&`/`x`).
+- **Double accidentals as first-class** (±2 in `.accidentalSemitones()`; symbols `&`/`x`).
   The book's 𝔸 = {♭,♮,♯} truncates to singles even though 𝄫/𝄪 appear in its own tables —
   a natural candidate for a book remark extending the Semitonal-Accidental Norm.
 - **Enharmonic simplification as an operation** (`.simpler_enharmonic()`); the book defines
@@ -99,7 +101,7 @@ Shared language proving the lineage:
 |---|---|---|
 | Letter indexing | 1-indexed (`LETTERS[1:7]`, recurring `mod7(x−1)+1` gymnastics) | 0-indexed ℤ₇ (A = 0) — the cleanup of the code's off-by-one dance |
 | Degree operator | `%STEP+% (degree − 1)` | Λₖ = L ⊕ (k−1) — same 1-indexed musical-degree convention, formalized |
-| Flat symbol | `-` (kern convention) and `b` both accepted (`INC_HASH`) | ♭ only |
+| Flat symbol | `-` (kern convention) and `b` both accepted (`ACC_HASH`) | ♭ only |
 | Double accidentals | `&` (𝄫), `x` (𝄪) | `\dflat` / `\dsharp` macros (but see fossil #3) |
 | Step-distance criterion | flat-side only (`HAS_FL`) | dual flat/sharp formulation |
 
@@ -111,8 +113,9 @@ Code side (this repo):
 
 - `blues_scale()` (`scale.R`) references `OTHER_SCALES`, which is commented out in
   `data.R` — the function errors if called.
-- `header.R` `preset2` lists `misty.R` and `enharmonic.R`, which no longer exist in `R/`
-  (enharmonic logic lives in `incidental.R`).
+- ~~`header.R` `preset2` lists `misty.R` and `enharmonic.R`, which no longer exist in `R/`
+  (enharmonic logic lives in `accidental.R`).~~ **Fixed 2026-07-10** — preset now lists
+  the real core files.
 - `.complexCase()` (`harmony.R`) carries the comment *"doesn't quite do the trick; misses
   white keys..."* — this is precisely the edge case that the book's Preservation Principle
   (with the degree-aware distance d̃) resolves cleanly. If the code is ever revived, the
