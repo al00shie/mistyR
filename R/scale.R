@@ -17,7 +17,7 @@ diatonic_scale <- function(tonic, mode){
 }
 #============================================#
 # Given a tonic, returns the major blues scale
-blues_scale <- function(tonic, quality){
+blues_scale <- function(tonic, quality = "minor"){
   if(quality == "minor"){
     scale(tonic, OTHER_SCALES$minor_blues)
   }

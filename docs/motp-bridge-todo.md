@@ -122,11 +122,13 @@ Each pass is its own commit for selective revert.
   treatment (Ch. 1 ↔ tuning tables; Ch. 3 ↔ `DIATONIC_SCALES`, mode tables,
   `analysis.R` stylometry).
 - [ ] **C2. `misty-stub` lineage note**: one page on mistyPy / museR (vendored
-  upstream) / museR-reconstructed and what each contributed. NEW (2026-07-10):
-  the book repo's in-flight cleanup is deleting `music-prog/MST-R/` — a *third*
-  copy of the mistyR core (pre-rename, with `tentative/scale.R`) plus
-  `music-python/`. Confirm nothing unique is lost before that deletion is
-  committed, then fold into the lineage note.
+  upstream) / museR-reconstructed and what each contributed. Update (2026-07-10,
+  later): the book repo's third mistyR copy (`music-prog/MST-R/`) is now tracked
+  at `~archive/music-prog/` there (book commit `f9e7790`), verified byte-identical
+  before the move; its `tentative/scale.R` held no unique logic — only a
+  `quality = "minor"` default for `blues_scale()`, ported to live code here.
+  `music-python/` (graphics.py, music.py) also lives in that archive; fold both
+  into the lineage note when written.
 - [ ] **C3. Keep concordance truthful after renames** (A1 makes fossil #1
   historical; book fixes B1–B5 retire matching "Known Issues" entries).
 
