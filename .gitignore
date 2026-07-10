@@ -41,3 +41,6 @@ vignettes/*.pdf
 
 # macOS
 .DS_Store
+
+# macOS custom folder icons (resource forks; keep local, not in git)
+Icon?
