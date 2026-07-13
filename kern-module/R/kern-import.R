@@ -168,9 +168,8 @@ kern2df <- function(spline){
   notes_df_ <- map_dfc(1:max_notes, function(foo){data.frame(V = rep(NA_character_, num_notes))})
   # Populate the dataframe
   for(i in 1:num_notes){
-    vec_notes <- str_replace_all(resolved_notes[[i]], "<|>|_|\\^|(|)", "")
-    idx <- str_detect(vec_notes, "")
-    vec_notes[!idx] <- NA
+    vec_notes <- str_replace_all(resolved_notes[[i]], "<|>|_|\\^|\\(|\\)", "")
+    vec_notes[vec_notes == ""] <- NA
     notes_df_[i,1:length(vec_notes)] <- vec_notes
   }
   

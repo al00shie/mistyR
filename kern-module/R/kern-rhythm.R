@@ -33,7 +33,7 @@ dotted_freq <- function(piece){
   # Declare dotted rhythms
   DOTTED_RHYTHMS <- RHYTHMS[which(str_detect(RHYTHMS, pattern = "\\.{1}"))]
   # Subset frequency table of dotted rhythms
-  freqs <- top_rhythm_freq(piece)
+  freqs <- rhythm_freq(piece)
   dotted_freqs <- freqs[names(freqs) %in% DOTTED_RHYTHMS]
   # Return freq table of dotted rhythms
   dotted_freqs
@@ -75,6 +75,8 @@ rhythm_entropy <- function(piece){
   changes <- 0
   for(j in 1:ncol(r_df)){
     rv <- as.numeric(as.vector(na.omit(r_df[,j])))
+    # Guard: a voice with fewer than 2 rhythmic values has no transitions
+    if(length(rv) < 2){ changes[j] <- NA; next }
     changes_j <- 0
     for(i in 2:length(rv)){
       c <- rv[i]-rv[i-1]

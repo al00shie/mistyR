@@ -122,7 +122,7 @@ scale_degree_freq <- function(piece){
   degrees_count <- rep(0,length(scale_degrees))
   tot <- 0
   for(i in 1:ncol(note_df)){
-    a <- table(note_df[,1]) # is this really a better useage?
+    a <- table(note_df[,i])
     tot <- tot + sum(a, na.rm = T)
     scale_deg <- a[scale_degrees] %>% as.vector
     scale_deg[is.na(scale_deg)]<- 0
