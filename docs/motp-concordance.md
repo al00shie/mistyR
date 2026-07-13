@@ -140,3 +140,9 @@ Book side (logged here for cross-visibility; details in the Ch. 2 review):
 - Companion doc candidates (not yet written): a chapter-by-chapter index once more MOTP
   chapters have code counterparts; a `misty-stub` lineage note (mistyPy / museR /
   museR-reconstructed).
+- **Expository companion (written 2026-07-12):**
+  [`bridge-paper/motp-mistyr-bridge.pdf`](bridge-paper/motp-mistyr-bridge.pdf) — the
+  typeset explanation of everything this file records: derivations (incl.
+  `.WKsemitones` ≡ dₙ), worked examples, and the provenance argument. This file stays
+  the maintained mapping; the paper is a dated snapshot — recompile it after major
+  renames (`pdflatex` on `bridge-paper/motp-mistyr-bridge.tex`, twice).

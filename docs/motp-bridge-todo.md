@@ -160,6 +160,12 @@ everything archive-flavored deleted from working trees (git history retains).
   into the lineage note when written.
 - [ ] **C3. Keep concordance truthful after renames** (A1 makes fossil #1
   historical; book fixes B1–B5 retire matching "Known Issues" entries).
+- [x] **C4. Expository bridge PDF** (done 2026-07-12): `docs/bridge-paper/`
+  — 17-page typeset paper ("From Code to Theorem") explaining every
+  concordance entry with derivations (`.WKsemitones` ≡ dₙ), worked examples,
+  the Thm-2.5.1-is-`scale()` argument, fossils, and the stylometry call-chain
+  diagram. Source is self-contained LaTeX (does NOT `\input` the book's
+  preamble — see B16); recompile with two `pdflatex` passes after renames.
 
 ---
 
