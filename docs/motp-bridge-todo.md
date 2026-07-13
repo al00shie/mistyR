@@ -116,6 +116,35 @@ Each pass is its own commit for selective revert.
   `\th`, …): fine for a solo manuscript; alias layer needed before any publisher
   class file. `\and` specifically breaks multi-author `\author`.
 
+## D. Module development (kern & midi) — active track
+
+Ali's directive (2026-07-12): keep and develop the kern and midi modules;
+everything archive-flavored deleted from working trees (git history retains).
+
+- [x] **D1. Kern pipeline repaired & verified** (2026-07-12, `336ab8e`): fixed
+  stringr rot in `.k2df_resolve_chords`, the `[,1]`→`[,i]` voice bug in
+  `scale_degree_freq`, phantom `top_rhythm_freq`, and a crash guard in
+  `rhythm_entropy`. Full run green on `data/bach-prelude-C.krn`.
+- [x] **D2. `midi2df()` parity importer** (2026-07-12, `abb9894`): kern2df
+  column contract from .mid files; whole analysis suite runs on MIDI
+  (verified: clairedelune.mid incl. Db→E→Db key windows, blame.mid).
+- [ ] **D3. Rests/continuations**: kern frames carry `rest`/`.` tokens; MIDI
+  silence is just absence. Consider synthesizing rest rows from inter-attack
+  gaps so density/rhythm features see silence equally in both formats.
+- [ ] **D4. Multi-instrument `piece_df` for MIDI**: kern has
+  `piece_df(files, instruments)`; MIDI tracks (`.getTrackNames`) could yield
+  the same instrument-prefixed columns from a single file.
+- [ ] **D5. Triplets & quantization tolerance**: `.m2df_rhythm` snaps to the
+  duple lattice only; add triplet tokens (and expose the snap tolerance)
+  before feeding performed (unquantized) MIDI.
+- [ ] **D6. Tests**: a small testthat suite pinning both importers' column
+  contract and the analysis outputs on the bundled data files.
+- [ ] **D7. MIDI-only features**: velocity/dynamics and tempo-map stylometry —
+  dimensions kern cannot see; natural extension of the modality feature set.
+- [ ] **D8. Corpus run**: `data/composer/` (6×~15 kern pieces) through the
+  repaired pipeline to regenerate/validate `analysis/` CSVs; then a mixed
+  kern+MIDI corpus becomes possible via the shared frame.
+
 ## C. Bridge documents
 
 - [ ] **C1. Chapter-by-chapter concordance index** once Ch. 1/3 get the same
